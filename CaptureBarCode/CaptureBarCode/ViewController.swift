@@ -19,7 +19,7 @@ let kScreenHeight = UIScreen.main.bounds.size.height
 let kNavigationHeight = UIApplication.shared.statusBarFrame.height
 
 /// 中间扫描框的高度
-private let kBoxW : CGFloat = kScreenWidth * 0.5
+private let kBoxW : CGFloat = kScreenWidth * 0.7
 
 /// 中间扫描框的中间点的Y
 private let kBoxCentY : CGFloat = kScreenHeight * 0.4
@@ -39,77 +39,117 @@ class ViewController: UIViewController {
     /// 预览图层
     lazy var preview : AVCaptureVideoPreviewLayer = {
         let preview = AVCaptureVideoPreviewLayer.init(session: self.session)
-        
         preview.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        
         preview.frame = CGRect.init(x: 0, y: kNavigationHeight, width: kScreenWidth, height:kScreenHeight - kNavigationHeight)
-        
         preview.backgroundColor = UIColor.black.cgColor
         
         
         let bpath : UIBezierPath = UIBezierPath.init(rect: self.view.bounds)
-        
-        let shaplayer = CAShapeLayer()
-        
-        shaplayer.frame = preview.bounds
-        
         let path = self.createBezierPath(points: [leftTopPoint,rightTopPoint,rightBottomPoint,leftBottomPoint])
-        
         bpath.append(path)
-        
+        let shaplayer = CAShapeLayer()
+        shaplayer.frame = preview.bounds
         shaplayer.path = bpath.cgPath
-        
         shaplayer.fillColor = UIColor.black.withAlphaComponent(0.4).cgColor
-        
         shaplayer.fillRule = kCAFillRuleEvenOdd
         
-        
-        
-        
+        // 绘画折角参数
         let edgeWidth : CGFloat = 30
-        
         let edgeSize = CGSize.init(width: edgeWidth, height: edgeWidth)
-        
-        let edgeLineWidth : CGFloat = 2
-        
+        let edgeLineWidth_broken : CGFloat = 2
+        // 绘画直线参数
+        let edgeWidthLine : CGFloat = kBoxW - edgeWidth * 2
+        let edgeLineWidth_straight : CGFloat = 0.5
+        let edgeSize_Line = CGSize.init(width: edgeWidthLine, height: edgeLineWidth_straight)
+
+        // 左上角折角
         let leftTopLayer = CAShapeLayer()
-        
         leftTopLayer.frame = CGRect.init(origin: leftTopPoint, size: edgeSize)
-        
-        let leftTopPath = self.createBezierPath(points: [CGPoint.init(x: 0, y: 0),CGPoint.init(x: edgeWidth, y: 0),CGPoint.init(x: edgeWidth, y: edgeLineWidth),CGPoint.init(x: edgeLineWidth, y: edgeLineWidth),CGPoint.init(x: edgeLineWidth, y: edgeWidth),CGPoint.init(x: 0, y: edgeWidth)])
+        let leftTopPath = self.createBezierPath(points: [CGPoint.init(x: 0, y: 0),
+                                                         CGPoint.init(x: edgeWidth, y: 0),
+                                                         CGPoint.init(x: edgeWidth, y: edgeLineWidth_broken),
+                                                         CGPoint.init(x: edgeLineWidth_broken, y: edgeLineWidth_broken),
+                                                         CGPoint.init(x: edgeLineWidth_broken, y: edgeWidth),
+                                                         CGPoint.init(x: 0, y: edgeWidth)])
         leftTopLayer.path = leftTopPath.cgPath
         leftTopLayer.fillColor = UIColor.init(hexString: "#00abf3").cgColor
         
+        // 上方直线
+        let TopLayer_Line = CAShapeLayer()
+        TopLayer_Line.frame = CGRect.init(origin: CGPoint.init(x: (leftTopPoint.x + edgeWidth), y: leftTopPoint.y), size: edgeSize_Line)
+        let TopPath_Line = self.createBezierPath(points: [CGPoint.init(x: 0, y: (edgeLineWidth_broken - edgeLineWidth_straight)/2),
+                                                              CGPoint.init(x: edgeWidthLine, y: (edgeLineWidth_broken - edgeLineWidth_straight)/2),
+                                                              CGPoint.init(x: edgeWidthLine, y: edgeLineWidth_straight + (edgeLineWidth_broken - edgeLineWidth_straight)/2),
+                                                              CGPoint.init(x: 0, y: edgeLineWidth_straight + (edgeLineWidth_broken - edgeLineWidth_straight)/2)])
+        TopLayer_Line.path = TopPath_Line.cgPath
+        TopLayer_Line.fillColor = UIColor.gray.cgColor
         
+        // 右上角折角
         let rightTopLayer = CAShapeLayer()
         rightTopLayer.frame = CGRect.init(origin: CGPoint.init(x: rightTopPoint.x - edgeWidth, y: rightTopPoint.y), size: edgeSize)
-        
-        let rightTopPath = self.createBezierPath(points: [CGPoint.init(x: edgeWidth, y: 0),CGPoint.init(x: 0, y: 0),CGPoint.init(x: 0, y: edgeLineWidth),CGPoint.init(x: edgeWidth - edgeLineWidth, y: edgeLineWidth),CGPoint.init(x: edgeWidth - edgeLineWidth, y: edgeWidth),CGPoint.init(x: edgeWidth, y: edgeWidth)])
+        let rightTopPath = self.createBezierPath(points: [CGPoint.init(x: edgeWidth, y: 0),
+                                                          CGPoint.init(x: 0, y: 0),
+                                                          CGPoint.init(x: 0, y: edgeLineWidth_broken),
+                                                          CGPoint.init(x: edgeWidth - edgeLineWidth_broken, y: edgeLineWidth_broken),
+                                                          CGPoint.init(x: edgeWidth - edgeLineWidth_broken, y: edgeWidth),
+                                                          CGPoint.init(x: edgeWidth, y: edgeWidth)])
         rightTopLayer.path = rightTopPath.cgPath
         rightTopLayer.fillColor = UIColor.init(hexString: "#00abf3").cgColor
         
+        // 右方直线
+        let rightLayer_Line = CAShapeLayer()
+        rightLayer_Line.frame = CGRect.init(origin: CGPoint.init(x: (rightTopPoint.x) - edgeLineWidth_broken, y: rightTopPoint.y + edgeWidth), size: edgeSize_Line)
+        let rightPath_Line = self.createBezierPath(points: [CGPoint.init(x: (edgeLineWidth_broken - edgeLineWidth_straight)/2, y: 0),
+                                                              CGPoint.init(x: (edgeLineWidth_broken - edgeLineWidth_straight)/2, y: edgeWidthLine),
+                                                              CGPoint.init(x: edgeLineWidth_straight + (edgeLineWidth_broken - edgeLineWidth_straight)/2, y: edgeWidthLine),
+                                                              CGPoint.init(x: edgeLineWidth_straight + (edgeLineWidth_broken - edgeLineWidth_straight)/2, y: 0)])
+        rightLayer_Line.path = rightPath_Line.cgPath
+        rightLayer_Line.fillColor = UIColor.gray.cgColor
+        
+        // 右下角折角
         let rightBottomLayer = CAShapeLayer()
         rightBottomLayer.frame = CGRect.init(origin: CGPoint.init(x: rightBottomPoint.x - edgeWidth, y: rightBottomPoint.y - edgeWidth), size: edgeSize)
-        
-        let rightBottomPath = self.createBezierPath(points: [CGPoint.init(x: edgeWidth, y: edgeWidth),CGPoint.init(x: edgeWidth, y: 0),CGPoint.init(x: edgeWidth - edgeLineWidth, y: 0),CGPoint.init(x: edgeWidth - edgeLineWidth, y: edgeWidth - edgeLineWidth),CGPoint.init(x: 0, y: edgeWidth - edgeLineWidth),CGPoint.init(x: 0, y: edgeWidth)])
+        let rightBottomPath = self.createBezierPath(points: [CGPoint.init(x: edgeWidth, y: edgeWidth),CGPoint.init(x: edgeWidth, y: 0),CGPoint.init(x: edgeWidth - edgeLineWidth_broken, y: 0),CGPoint.init(x: edgeWidth - edgeLineWidth_broken, y: edgeWidth - edgeLineWidth_broken),CGPoint.init(x: 0, y: edgeWidth - edgeLineWidth_broken),CGPoint.init(x: 0, y: edgeWidth)])
         rightBottomLayer.path = rightBottomPath.cgPath
         rightBottomLayer.fillColor = UIColor.init(hexString: "#00abf3").cgColor
         
+        // 下方直线
+        let bottomLayer_Line = CAShapeLayer()
+        bottomLayer_Line.frame = CGRect.init(origin: CGPoint.init(x: (leftBottomPoint.x + edgeWidth), y: leftBottomPoint.y - edgeLineWidth_broken), size: edgeSize_Line)
+        let bottomPath_Line = self.createBezierPath(points: [CGPoint.init(x: 0, y: (edgeLineWidth_broken - edgeLineWidth_straight)/2),
+                                                          CGPoint.init(x: edgeWidthLine, y: (edgeLineWidth_broken - edgeLineWidth_straight)/2),
+                                                          CGPoint.init(x: edgeWidthLine, y: edgeLineWidth_straight + (edgeLineWidth_broken - edgeLineWidth_straight)/2),
+                                                          CGPoint.init(x: 0, y: edgeLineWidth_straight + (edgeLineWidth_broken - edgeLineWidth_straight)/2)])
+        bottomLayer_Line.path = bottomPath_Line.cgPath
+        bottomLayer_Line.fillColor = UIColor.gray.cgColor
         
+        // 左下角折角
         let leftBottomLayer = CAShapeLayer()
         leftBottomLayer.frame = CGRect.init(origin: CGPoint.init(x: leftBottomPoint.x, y: leftBottomPoint.y - edgeWidth), size: edgeSize)
-        
-        let leftBottomPath = self.createBezierPath(points: [CGPoint.init(x: 0, y: edgeWidth),CGPoint.init(x: edgeWidth, y: edgeWidth),CGPoint.init(x: edgeWidth, y: edgeWidth - edgeLineWidth),CGPoint.init(x: edgeLineWidth, y: edgeWidth - edgeLineWidth),CGPoint.init(x: edgeLineWidth, y: 0),CGPoint.init(x: 0, y: 0)])
+        let leftBottomPath = self.createBezierPath(points: [CGPoint.init(x: 0, y: edgeWidth),CGPoint.init(x: edgeWidth, y: edgeWidth),CGPoint.init(x: edgeWidth, y: edgeWidth - edgeLineWidth_broken),CGPoint.init(x: edgeLineWidth_broken, y: edgeWidth - edgeLineWidth_broken),CGPoint.init(x: edgeLineWidth_broken, y: 0),CGPoint.init(x: 0, y: 0)])
         leftBottomLayer.path = leftBottomPath.cgPath
         leftBottomLayer.fillColor = UIColor.init(hexString: "#00abf3").cgColor
+        
+        // 左方直线
+        let leftLayer_Line = CAShapeLayer()
+        leftLayer_Line.frame = CGRect.init(origin: CGPoint.init(x: (leftTopPoint.x), y: leftTopPoint.y + edgeWidth), size: edgeSize_Line)
+        let leftPath_Line = self.createBezierPath(points: [CGPoint.init(x: (edgeLineWidth_broken - edgeLineWidth_straight)/2, y: 0),
+                                                            CGPoint.init(x: (edgeLineWidth_broken - edgeLineWidth_straight)/2, y: edgeWidthLine),
+                                                            CGPoint.init(x: edgeLineWidth_straight + (edgeLineWidth_broken - edgeLineWidth_straight)/2, y: edgeWidthLine),
+                                                            CGPoint.init(x: edgeLineWidth_straight + (edgeLineWidth_broken - edgeLineWidth_straight)/2, y: 0)])
+        leftLayer_Line.path = leftPath_Line.cgPath
+        leftLayer_Line.fillColor = UIColor.gray.cgColor
         
         
         preview.addSublayer(shaplayer)
         preview.addSublayer(leftTopLayer)
+        preview.addSublayer(TopLayer_Line)
         preview.addSublayer(rightTopLayer)
+        preview.addSublayer(rightLayer_Line)
         preview.addSublayer(rightBottomLayer)
+        preview.addSublayer(bottomLayer_Line)
         preview.addSublayer(leftBottomLayer)
-        
+        preview.addSublayer(leftLayer_Line)
         
         
         return preview
@@ -133,7 +173,6 @@ class ViewController: UIViewController {
         prompt.font = UIFont.systemFont(ofSize: 15)
         prompt.textColor = UIColor.white
         prompt.numberOfLines = 0
-        prompt.sizeToFit()
         
         return prompt
     }()
@@ -161,20 +200,14 @@ class ViewController: UIViewController {
         
         navigationItem.title = "扫描二维码"
         
-        
-        
         /// 获取设备
         let devices = AVCaptureDevice.devices(for: .video)
-        
         let d = devices.filter({ return $0.position == .back }).first
-        
         /// 视频输入
         let videoInput = try? AVCaptureDeviceInput(device: d!)
         
-        
-        
+        // 视频输出
         let videoOutput = AVCaptureMetadataOutput()
-        
         videoOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
         if session.canAddInput(videoInput!) {
             session.addInput(videoInput!)
@@ -182,7 +215,6 @@ class ViewController: UIViewController {
         if session.canAddOutput(videoOutput) {
             session.addOutput(videoOutput)
         }
-        
         ///扫描类型
         videoOutput.metadataObjectTypes = [
             .qr,
@@ -192,12 +224,14 @@ class ViewController: UIViewController {
             .ean13,
             .ean8,
             .code93]
-        
         ///可识别区域  注意看这个rectOfInterest  不是一左上角为原点，以右上角为原点 并且rect的值是个比例在【0，1】之间
-        videoOutput.rectOfInterest = CGRect.init(x: (kBoxCentY - (kBoxW/2) + kNavigationHeight/2)/kScreenHeight, y: 1 - (kScreenWidth + kBoxW)/2/kScreenWidth, width: kBoxW/kScreenHeight, height: kBoxW/kScreenWidth)
+        videoOutput.rectOfInterest = CGRect.init(x: (kBoxCentY - (kBoxW/2) + kNavigationHeight/2)/kScreenHeight,
+                                                 y: 1 - (kScreenWidth + kBoxW)/2/kScreenWidth,
+                                                 width: kBoxW/kScreenHeight,
+                                                 height: kBoxW/kScreenWidth)
+        
         
         view.layer.addSublayer(preview)
-        
         self.view.addSubview(prompt)
         
         
@@ -226,55 +260,33 @@ class ViewController: UIViewController {
     
     /// 开始扫描
     func startRunning() {
-        
-        
         session.startRunning()
-        
         setupTimer()
-        
     }
     
     @objc func animalStart() {
-        
-        
         view.bringSubview(toFront: self.animalLine)
-        
-        
         animalLine.frame = CGRect.init(x: leftTopPoint.x, y: leftTopPoint.y + kNavigationHeight , width: kBoxW, height: 1)
         UIView.animate(withDuration: 3, animations: {
-            
             let frame = self.animalLine.frame
-                        
             let newY : CGFloat = leftTopPoint.y + kNavigationHeight + kBoxW - frame.size.height
-            
             let newFrame = CGRect.init(x: frame.origin.x, y: newY, width: frame.size.width, height: frame.size.height)
-            
             self.animalLine.frame = newFrame
-            
         }) { (finish) in
             
         }
-        
     }
     
     /// 结束扫描
     func stopRunning()  {
-        
         session.stopRunning()
-        
         timer?.invalidate()
-        
     }
     
     func setupTimer()  {
-        
-        
         self.animalStart()
-        
         self.timer = Timer.init(timeInterval: 3, target: self, selector: #selector(animalStart), userInfo: nil, repeats: true)
-        
         RunLoop.main.add(self.timer!, forMode: RunLoopMode.commonModes)
-        
     }
     
     
@@ -300,10 +312,7 @@ extension ViewController : AVCaptureMetadataOutputObjectsDelegate
             
             startRunning()
         }
-        
     }
-    
-    
 }
 extension UIColor{
     convenience init(hexString:String){
@@ -326,12 +335,9 @@ extension UIColor{
         var range = NSRange()
         range.location = 0
         range.length = 2
-        
         let rString = (cString as NSString).substring(with: range)
-        
         range.location = 2
         let gString = (cString as NSString).substring(with: range)
-        
         range.location = 4
         let bString = (cString as NSString).substring(with: range)
         
