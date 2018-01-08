@@ -16,7 +16,7 @@ let kScreenWidth = UIScreen.main.bounds.size.width
 let kScreenHeight = UIScreen.main.bounds.size.height
 
 /// 导航条高度
-let kNavigationHeight = UIApplication.shared.statusBarFrame.height
+let kSatusBarHeight = UIApplication.shared.statusBarFrame.height
 
 /// 中间扫描框的高度
 private let kBoxW : CGFloat = kScreenWidth * 0.7
@@ -40,7 +40,7 @@ class CaptureView: UIView {
     lazy var preview : AVCaptureVideoPreviewLayer = {
         let preview = AVCaptureVideoPreviewLayer.init(session: self.session)
         preview.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        preview.frame = CGRect.init(x: 0, y: kNavigationHeight, width: kScreenWidth, height:kScreenHeight - kNavigationHeight)
+        preview.frame = CGRect.init(x: 0, y: 0, width: kScreenWidth, height:kScreenHeight)
         preview.backgroundColor = UIColor.black.cgColor
         
         
@@ -167,7 +167,7 @@ class CaptureView: UIView {
     var isAnimal : Bool?
     
     var prompt : UILabel = {
-        let prompt = UILabel.init(frame: CGRect.init(x: leftBottomPoint.x, y: leftBottomPoint.y + kNavigationHeight + 10, width: kBoxW, height: 60))
+        let prompt = UILabel.init(frame: CGRect.init(x: leftBottomPoint.x, y: leftBottomPoint.y + 10, width: kBoxW, height: 60))
         prompt.text = "将二维码放入扫描框即可自动扫描"
         prompt.textAlignment = .center
         prompt.font = UIFont.systemFont(ofSize: 15)
@@ -183,16 +183,22 @@ class CaptureView: UIView {
         super.init(frame: frame)
         
         /// 获取设备
-        let devices = AVCaptureDevice.devices(for: .video)
-        let d = devices.filter({ return $0.position == .back }).first
-        /// 视频输入
-        let videoInput = try? AVCaptureDeviceInput(device: d!)
+        let videoCaptureDevice = AVCaptureDevice.default(for: AVMediaType.video)
+        let videoInput: AVCaptureDeviceInput
+        
+        do {
+            // 视频输入
+            videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice!)
+        } catch {
+            return
+        }
+        
         
         // 视频输出
         let videoOutput = AVCaptureMetadataOutput()
         videoOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-        if session.canAddInput(videoInput!) {
-            session.addInput(videoInput!)
+        if session.canAddInput(videoInput) {
+            session.addInput(videoInput)
         }
         if session.canAddOutput(videoOutput) {
             session.addOutput(videoOutput)
@@ -207,7 +213,7 @@ class CaptureView: UIView {
             .ean8,
             .code93]
         ///可识别区域  注意看这个rectOfInterest  不是一左上角为原点，以右上角为原点 并且rect的值是个比例在【0，1】之间
-        videoOutput.rectOfInterest = CGRect.init(x: (kBoxCentY - (kBoxW/2) + kNavigationHeight/2)/kScreenHeight,
+        videoOutput.rectOfInterest = CGRect.init(x: (kBoxCentY - (kBoxW/2) )/kScreenHeight,
                                                  y: 1 - (kScreenWidth + kBoxW)/2/kScreenWidth,
                                                  width: kBoxW/kScreenHeight,
                                                  height: kBoxW/kScreenWidth)
@@ -249,10 +255,10 @@ class CaptureView: UIView {
     
     @objc func animalStart() {
         self.bringSubview(toFront: self.animalLine)
-        animalLine.frame = CGRect.init(x: leftTopPoint.x, y: leftTopPoint.y + kNavigationHeight , width: kBoxW, height: 1)
+        animalLine.frame = CGRect.init(x: leftTopPoint.x, y: leftTopPoint.y , width: kBoxW, height: 1)
         UIView.animate(withDuration: 3, animations: {
             let frame = self.animalLine.frame
-            let newY : CGFloat = leftTopPoint.y + kNavigationHeight + kBoxW - frame.size.height
+            let newY : CGFloat = leftTopPoint.y + kBoxW - frame.size.height
             let newFrame = CGRect.init(x: frame.origin.x, y: newY, width: frame.size.width, height: frame.size.height)
             self.animalLine.frame = newFrame
         }) { (finish) in

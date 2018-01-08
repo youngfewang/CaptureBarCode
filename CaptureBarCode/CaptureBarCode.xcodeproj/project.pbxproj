@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AADF39E21FFCDA0E00A8D8FC /* CaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADF39E11FFCDA0E00A8D8FC /* CaptureView.swift */; };
+		AAF2E86F2000D737003081AD /* CaptureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF2E86E2000D737003081AD /* CaptureCollectionViewCell.swift */; };
 		AAF79F161FEDE87A00E9F589 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF79F151FEDE87A00E9F589 /* AppDelegate.swift */; };
 		AAF79F181FEDE87A00E9F589 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF79F171FEDE87A00E9F589 /* ViewController.swift */; };
 		AAF79F1B1FEDE87A00E9F589 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAF79F191FEDE87A00E9F589 /* Main.storyboard */; };
@@ -37,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		AADF39E11FFCDA0E00A8D8FC /* CaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureView.swift; sourceTree = "<group>"; };
+		AAF2E86E2000D737003081AD /* CaptureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureCollectionViewCell.swift; sourceTree = "<group>"; };
 		AAF79F121FEDE87A00E9F589 /* CaptureBarCode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CaptureBarCode.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAF79F151FEDE87A00E9F589 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAF79F171FEDE87A00E9F589 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				AAF79F1E1FEDE87A00E9F589 /* LaunchScreen.storyboard */,
 				AAF79F211FEDE87A00E9F589 /* Info.plist */,
 				AADF39E11FFCDA0E00A8D8FC /* CaptureView.swift */,
+				AAF2E86E2000D737003081AD /* CaptureCollectionViewCell.swift */,
 			);
 			path = CaptureBarCode;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AAF79F181FEDE87A00E9F589 /* ViewController.swift in Sources */,
+				AAF2E86F2000D737003081AD /* CaptureCollectionViewCell.swift in Sources */,
 				AAF79F161FEDE87A00E9F589 /* AppDelegate.swift in Sources */,
 				AADF39E21FFCDA0E00A8D8FC /* CaptureView.swift in Sources */,
 			);
