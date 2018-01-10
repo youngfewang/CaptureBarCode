@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		AADF39E21FFCDA0E00A8D8FC /* CaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADF39E11FFCDA0E00A8D8FC /* CaptureView.swift */; };
+		AAE4C7E62005C7F600018CE3 /* zxing_laser.png in Resources */ = {isa = PBXBuildFile; fileRef = AAE4C7E42005C7F500018CE3 /* zxing_laser.png */; };
+		AAE4C7EA2005E25500018CE3 /* nav_back.png in Resources */ = {isa = PBXBuildFile; fileRef = AAE4C7E92005E25500018CE3 /* nav_back.png */; };
+		AAE4C7F22005F3AD00018CE3 /* more.png in Resources */ = {isa = PBXBuildFile; fileRef = AAE4C7F12005F3AD00018CE3 /* more.png */; };
 		AAF2E86F2000D737003081AD /* CaptureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF2E86E2000D737003081AD /* CaptureCollectionViewCell.swift */; };
 		AAF79F161FEDE87A00E9F589 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF79F151FEDE87A00E9F589 /* AppDelegate.swift */; };
 		AAF79F181FEDE87A00E9F589 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF79F171FEDE87A00E9F589 /* ViewController.swift */; };
@@ -16,7 +19,6 @@
 		AAF79F201FEDE87A00E9F589 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAF79F1E1FEDE87A00E9F589 /* LaunchScreen.storyboard */; };
 		AAF79F2B1FEDE87A00E9F589 /* CaptureBarCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF79F2A1FEDE87A00E9F589 /* CaptureBarCodeTests.swift */; };
 		AAF79F361FEDE87B00E9F589 /* CaptureBarCodeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF79F351FEDE87B00E9F589 /* CaptureBarCodeUITests.swift */; };
-		AAF79F461FEE5A5C00E9F589 /* zxing_laser.png in Resources */ = {isa = PBXBuildFile; fileRef = AAF79F451FEE5A5C00E9F589 /* zxing_laser.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +40,9 @@
 
 /* Begin PBXFileReference section */
 		AADF39E11FFCDA0E00A8D8FC /* CaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureView.swift; sourceTree = "<group>"; };
+		AAE4C7E42005C7F500018CE3 /* zxing_laser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zxing_laser.png; sourceTree = "<group>"; };
+		AAE4C7E92005E25500018CE3 /* nav_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_back.png; sourceTree = "<group>"; };
+		AAE4C7F12005F3AD00018CE3 /* more.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = more.png; sourceTree = "<group>"; };
 		AAF2E86E2000D737003081AD /* CaptureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureCollectionViewCell.swift; sourceTree = "<group>"; };
 		AAF79F121FEDE87A00E9F589 /* CaptureBarCode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CaptureBarCode.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAF79F151FEDE87A00E9F589 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -52,7 +57,6 @@
 		AAF79F311FEDE87B00E9F589 /* CaptureBarCodeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CaptureBarCodeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAF79F351FEDE87B00E9F589 /* CaptureBarCodeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureBarCodeUITests.swift; sourceTree = "<group>"; };
 		AAF79F371FEDE87B00E9F589 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AAF79F451FEE5A5C00E9F589 /* zxing_laser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zxing_laser.png; path = Images.xcassets/zxing_laser.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +84,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AAE4C7E82005C85400018CE3 /* ResouceImage */ = {
+			isa = PBXGroup;
+			children = (
+				AAE4C7F12005F3AD00018CE3 /* more.png */,
+				AAE4C7E92005E25500018CE3 /* nav_back.png */,
+				AAE4C7E42005C7F500018CE3 /* zxing_laser.png */,
+			);
+			path = ResouceImage;
+			sourceTree = "<group>";
+		};
 		AAF79F091FEDE87A00E9F589 = {
 			isa = PBXGroup;
 			children = (
@@ -107,11 +121,11 @@
 				AAF79F171FEDE87A00E9F589 /* ViewController.swift */,
 				AAF79F191FEDE87A00E9F589 /* Main.storyboard */,
 				AAF79F1C1FEDE87A00E9F589 /* Images.xcassets */,
-				AAF79F451FEE5A5C00E9F589 /* zxing_laser.png */,
 				AAF79F1E1FEDE87A00E9F589 /* LaunchScreen.storyboard */,
 				AAF79F211FEDE87A00E9F589 /* Info.plist */,
 				AADF39E11FFCDA0E00A8D8FC /* CaptureView.swift */,
 				AAF2E86E2000D737003081AD /* CaptureCollectionViewCell.swift */,
+				AAE4C7E82005C85400018CE3 /* ResouceImage */,
 			);
 			path = CaptureBarCode;
 			sourceTree = "<group>";
@@ -241,8 +255,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AAF79F461FEE5A5C00E9F589 /* zxing_laser.png in Resources */,
 				AAF79F201FEDE87A00E9F589 /* LaunchScreen.storyboard in Resources */,
+				AAE4C7E62005C7F600018CE3 /* zxing_laser.png in Resources */,
+				AAE4C7F22005F3AD00018CE3 /* more.png in Resources */,
+				AAE4C7EA2005E25500018CE3 /* nav_back.png in Resources */,
 				AAF79F1D1FEDE87A00E9F589 /* Images.xcassets in Resources */,
 				AAF79F1B1FEDE87A00E9F589 /* Main.storyboard in Resources */,
 			);
