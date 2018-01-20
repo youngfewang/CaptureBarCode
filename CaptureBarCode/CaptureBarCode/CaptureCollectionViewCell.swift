@@ -9,15 +9,15 @@
 import UIKit
 
 class CaptureCollectionViewCell: UICollectionViewCell {
-    var showView = UIView()
+    var showView = CaptureView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let captureView = CaptureView.init(frame: self.contentView.bounds)
-        self.contentView.addSubview(captureView)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
+    
 }

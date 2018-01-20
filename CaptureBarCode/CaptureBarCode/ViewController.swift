@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 private var topViewHeight : CGFloat = 50.0
 private var backViewWidth : CGFloat = kScreenWidth/6
@@ -49,6 +50,19 @@ class ViewController: UIViewController {
         moreView.setImage(UIImage.init(named: "more.png"), for:UIControlState.normal)
         moreView.addTarget(self, action: #selector(moreAction), for: UIControlEvents.touchUpInside)
         return moreView
+    }()
+    
+    lazy var authorizationView : UIView = {
+        let authorizationView = UIView.init(frame: CGRect.init(x: 0, y: kSatusBarHeight + topViewHeight,
+                                                         width: kScreenWidth, height: kScreenHeight - (kSatusBarHeight + topViewHeight)))
+        authorizationView.backgroundColor = UIColor.black
+        let authorizationLabel = UILabel.init(frame: CGRect.init(x: kScreenWidth/4, y: kScreenHeight/4, width: kScreenWidth/2, height: kScreenHeight/4))
+        authorizationLabel.text = "相机访问权限关闭 \n请前往”设置->隐私->相机“打开"
+        authorizationLabel.textAlignment = NSTextAlignment.center
+        authorizationLabel.textColor = UIColor.gray
+        authorizationLabel.numberOfLines = 0
+        authorizationView.addSubview(authorizationLabel)
+        return authorizationView
     }()
     
     lazy var collectionView : UICollectionView = {
@@ -102,9 +116,14 @@ class ViewController: UIViewController {
         topView.addSubview(backView)
         topView.addSubview(moreView)
         self.view.addSubview(topView)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        self.view.addSubview(collectionView)
+        let authStatus:AVAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
+        if (authStatus == AVAuthorizationStatus.denied || authStatus == AVAuthorizationStatus.restricted) {
+            self.view.addSubview(authorizationView)
+        } else {
+            collectionView.delegate = self
+            collectionView.dataSource = self
+            self.view.addSubview(collectionView)
+        }
     }
     
     func setScrollLabels() -> Void {
@@ -159,6 +178,23 @@ extension ViewController : UICollectionViewDataSource,UICollectionViewDelegateFl
         let cell : CaptureCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CaptureCollectionViewCell
         cell.showView = CaptureView.init(frame: cell.bounds)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let captureCell : CaptureCollectionViewCell = cell as! CaptureCollectionViewCell
+        for view: UIView in captureCell.subviews {
+            if view.isKind(of: CaptureView.self) {
+                captureCell.showView.startRunning()
+            } else {
+                cell.addSubview(captureCell.showView)
+                captureCell.showView.startRunning()
+            }
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let captureCell : CaptureCollectionViewCell = cell as! CaptureCollectionViewCell
+        captureCell.showView.stopRunning()
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
